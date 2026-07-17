@@ -1,0 +1,173 @@
+<!--
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⠛⠛⠛⢿⣿⠿⠿⠛⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣿⣿⣿⣿⣿⠟⠛⠻⠿⠋
+⠀⠀⠀⠀⠁⠀⠀⠀⢀⣀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣠⠖⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠈⠉⠻⣿⣿⣿⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⢠⣶⣻⠭⠭⢭⣓⢦⡀⠈⢻⣿⣷⣄⠀⠀⠀
+⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⢠⡏⡞⠁⠀⠐⠁⠙⢧⢳⠀⠀⣿⣿⣿⣷⣶⣶
+⣀⣠⣴⣶⡇⠀⠠⠀⠀⠀⠀⠀⢸⡇⡇⠊⠀⠀⠀⠊⡽⢸⠛⠋⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⡇⠀⠀⠀⠀⢀⠀⠀⠀⢷⡙⠦⣔⣈⣠⠞⣡⠟⠀⠀⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⡇⠀⠀⠀⠀⠘⢦⣤⡤⠏⠙⠓⠲⠴⠖⠛⠁⠀⠀⠀⣿⣿⣿⣿⣿⣿
+⠟⠉⠉⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡉⠉⠉⠉⠉
+⠀⠀⠀⡞⢻⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡟⢧⠀⠀⠀⠀
+⠀⠀⣼⠁⠸⣿⣿⣿⣿⡿⣿⠛⠛⠛⠛⢻⣿⣿⣿⣿⣿⣿⣿⣿⠃⠈⢷⡀⠀⠀
+⠀⠐⢧⣀⣀⣻⣛⣿⣯⣭⣿⢦⣀⣀⡴⢾⣿⣿⣿⣿⣿⣿⣿⡯⠤⠶⠖⠋⠀⠀
+⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⡼⠉⠉⣧⢸⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀
+⣀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⠃⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀ 
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapflen: the quintessential darflen client.</title>
+    <link rel="icon" type="image/icon" href="/images/favicon.png">
+    <link type="text/css" href="/styles/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/video.js" defer></script>
+  </head>
+  
+  <body masonry-shrink="true" onresize="adjustMasonry();adjustScrollableContent()">
+    <div id="container">
+      <div id="navbar">
+        <a href="/" id="logo-container">
+          <div id="logo"></div>
+        </a>
+
+        <div id="searchbar">
+          <input placeholder="Search yapflen" onkeypress>
+
+          <form method="GET" autocapitalize="none" autocomplete="off" aria-expanded="true" aria-haspopup="true" aria-label="Search bar" action="/search" id="submitsearch">
+            <input type="hidden" class="hidden">
+           </form>
+        </div>
+
+        <!--
+        <div style="background: #174e1e;background:#303030;height: 50px;padding: 8px 10px;display: flex;color: white;"><a style="color: inherit;margin-left: auto;">Login</a><a style="color: inherit;padding: 0px 5px 0px 16px;">Sign up</a></div>
+        -->
+        <div id="nav-account" class="loggedout">
+          <a onclick="authPopup()">Login</a><a>Sign up</a>
+        </div>
+      </div>
+      <div id="main">
+        <div id="tabs-bar-container">
+          <div id="tabs-bar" onclick="switchTab(event,'scrollable-content')">
+            <a class="selected">All</a><a>Feed</a><a>Popular</a><a>Trending</a>
+          </div>
+        </div>
+        <div id="scrollable-content" style="left: 0px;">
+          <div id="explore-posts" class="main-content" data-page="1" onscroll="infiniteScroll(this,'explore',null)">
+            <div class="content-wrapper row">
+              <div class="posts-wrapper">
+                <div class="post-composer card" tabindex="0">
+                  <textarea id="composer-b" placeholder></textarea>
+                  <div class="post-composer-actions">
+                    <div class="post-composer-actions-imagemap write selected"></div>
+                    <div class="post-composer-actions-imagemap poll"></div>
+                    <div class="post-composer-actions-imagemap group"></div>
+                  </div>
+                  <div class="composer-group write inactive">
+                    <form target='post-iframe' action="/new/post" method="POST" autocapitalize="none" autocomplete="off" spellcheck="off" id="form">
+                      <div class="composer-form">
+                          <iframe id="post-iframe" name="post-iframe" class="hidden" src onload></iframe>
+                          <div class="composer-text-field">
+                            <div class="composer-user-icon">
+                              <img src="/images/default.png">
+                            </div>
+                            <textarea name="textarea" class="composer-textarea" minlength="1" maxlength="8192"></textarea>
+                          </div>
+                          <div class="composer-options">
+                            <label>
+                              <small>Add photos:</small>
+                              <button class="upload">Upload from computer</button>
+                            </label>
+                            <label>
+                              <small>Visibility:</small>
+                              <div id="dropdown-visibility" class="dropdown-wrapper">
+                                <button class="dropdown">Public</button>
+                                <input name="audience" value="public" type="hidden">
+                                <ul class="hidden">
+                                  <li data-value="public">Public</li>
+                                  <li data-value="private">Private</li>
+                                  <li data-value="followers">Followers only</li>
+                                  <li data-value="unlisted">Unlisted</li>
+                                </ul>
+                              </div>
+                            </label>
+                          </div>
+                      </div>
+                      <div class="composer-buttons">
+                        <button type="submit" class="submit">Submit</button>
+                        <button class="cancel">Cancel</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="masonry-container">
+                  <div class="mobile"></div>
+                  <div class="column1"></div>
+                  <div class="column2"></div>
+                </div>
+              </div>
+
+              <div id="stats-content">
+                <div id="participate-election" class="card">
+                  <p>Participate in the<br>
+                  election!</p>
+                  <a type="button" class="button">Vote</a>
+                </div>
+
+                <div id="contribute-wiki" class="card">
+                  <p>Contribute to the <br>
+                    wiki!</p>
+                  <a target="_blank" href="https://wiki.darflen.com/" class="button">Visit</a>
+                </div>
+              </div>
+            </div>
+            <iframe src="#" id="explore-posts-iframe" name="explore-posts-iframe" class="hidden"></iframe>
+          </div>
+          <div id="feed-posts" class="main-content" data-page="1" onscroll="infiniteScroll(this,'feed',null)">
+            <div class="content-wrapper row">
+              <div class="posts-wrapper">
+                <div class="masonry-container">
+                  <div class="mobile"></div>
+                  <div class="column1"></div>
+                  <div class="column2"></div>
+                </div>
+              </div>
+
+            </div>
+            <iframe src="#" id="feed-posts-iframe" name="feed-posts-iframe" class="hidden"></iframe>
+          </div>
+          <div id="popular-posts" class="main-content" data-page="1" onscroll="infiniteScroll(this,'popular',null)">
+            <div class="content-wrapper row">
+              <div class="posts-wrapper">
+                <div class="masonry-container">
+                  <div class="mobile"></div>
+                  <div class="column1"></div>
+                  <div class="column2"></div>
+                </div>
+              </div>
+
+            </div>
+            <iframe src="#" id="popular-posts-iframe" name="popular-posts-iframe" class="hidden"></iframe>
+          </div>
+          <div id="trending-posts" class="main-content" data-page="1" onscroll="infiniteScroll(this,'trending',null)">
+            <div class="content-wrapper row">
+              <div class="posts-wrapper">
+                <div class="masonry-container">
+                  <div class="mobile"></div>
+                  <div class="column1"></div>
+                  <div class="column2"></div>
+                </div>
+              </div>
+
+            </div>
+            <iframe src="#" id="trending-posts-iframe" name="trending-posts-iframe" class="hidden"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

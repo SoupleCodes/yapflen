@@ -1,0 +1,28 @@
+<div class="video-player" data-paused="true" data-volume="50" data-fullscreen="false">
+    <video preload="none" poster>
+        <source src>
+    </video>
+    <div class="video-controls">
+        <div class="video-controls-bottom">
+            <div class="progress-bar">
+                <div class="progress-bar-track"></div>
+                <div class="progress-bar-indicator"></div>
+            </div>
+            <div class="controls-buttons">
+                <div class="play-toggle video-controls-imagemap"></div>
+                <div class="rewind video-controls-imagemap"></div>
+                <div class="volume-controls video-controls-imagemap">
+                    <div class="slider-input-wrapper">
+                        <input type="range" value="0" min="0" max="100" step="0.1">
+                    </div>
+                </div>
+                <div id="seek-wrapper">
+                    <span id="current-time">0:00</span>
+                    <span id="time-separator">/</span>
+                    <span id="videolength-time">0:00</span>
+                </div>
+                <div class="fullscreen video-controls-imagemap"></div>
+            </div>
+        </div>
+    </div>
+</div>

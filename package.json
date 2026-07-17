@@ -1,0 +1,15 @@
+{
+    "name": "yapflen",
+    "version": "0.0.0",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "pages": "npx wrangler pages dev ./public",
+        "deploy": "npx wrangler pages deploy public"
+    },
+    "dependencies": {
+        "highlight.js": "^11.11.1",
+        "markdown-it": "^14.3.0",
+        "wrangler": "^4.56.0"
+    }
+}

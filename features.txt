@@ -1,0 +1,42 @@
+# Community picker menu in post composer
+# Ability to style your page/homepage
+# Profanity filter
+# Themes
+# badges showing on posts
+# scroll bars for descriptions
+# dialog asking if you want to cancel your post when the tabs closed
+# improved Slider for multiple images/video
+# keyboard shortcuts for interaction formatting (ctrl+b for bolding, ctrl+i for italics, for example)
+# emoji dropdown menu
+# good pagination
+# $postid takes you to the post with that id like the wiki already does
+# darflen.com/@user, /%communityname, and $post  
+# There should also be a pop-up after clicking the button that warns us that the link is outside of Darflen, if it is, and showing the actual link that we are about to get redirected to. This is to prevent people from being redirected to suspicious websites.
+# Ability to add reposts to communities within the interface
+# _underlines_ for _italics_
+# Also https://darflen.com/#hashtag https://darflen.com/@username https://darflen.com/%community and https://darflen.com/$post-id all redirect
+# Add a back button on the pages of a post
+# scroll bar for about me sections (communities and profiles)
+# embed support
+# darfish translator
+# more detailed notifications page (lowkey odd that it doesnt tell you WHAT post exactly someone liked)
+# ability to spoiler-mark images/GIFs (could be used to mark GIFs with flashing lights)
+# the option to turn a youtube link into an embed
+# instead of hiding images in notifications entirely (can cause confusion), replace the image with [X attachment(s)] or something like that
+and this also applies to linked images, which override being hidden in notifications
+# Fix the issue where posts by blocked users show within reposts
+# Markdown images are displayed inline, and with their actual dimensions, so you can do things like custom emojis
+# signify if a post is public, private, followers only, or unlisted
+# option to see how many people voted instead of the percentage, and with that, also add an option that toggles if you also want the percent, so you would have 4 combinations
+    * nothing
+    * percent
+    * number of ppl
+    * percent + numbrt of ppl
+# daily message from darf - a picture of darf with a speech bubble showing a message from darf to the darflen users, which changes at 12:00 A.M. every day!
+# Different types of polls (ie quiz, picture, bar graph, etc) (customizable in user settings)
+# a way to see reposts of a post (maybe as an option in the ellipsis that goes to darflen.com/posts/[post id]/reposts ?) (yes i took this from wasteof beta it’s just soo useful)
+# choose which people you want notifications from and which people you don't.
+# we need a search bar rework where you can chose to search between posts, users and communities
+
+# https://www.slingacademy.com/article/javascript-asking-for-confirmation-before-closing-tab-window/
+✅✅✅✅

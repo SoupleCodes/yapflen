@@ -1,0 +1,39 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link type="text/css" href="/styles/index.css" rel="stylesheet">
+  </head>
+  
+  <body>
+    <div id="container" style="justify-content: center;align-items: center;">
+
+        <div style="width: 100px;border-radius: 100%;overflow: hidden;margin: 9px 0px">
+          <img src="/images/default.png">
+        </div>
+        <form target='loginiframe' action="/auth/login" method="POST" autocapitalize="none" autocomplete="off" spellcheck="off" id="form">
+          <iframe id="loginiframe" name="loginiframe" class="hidden" src onload></iframe>
+          <label for="email" class="column">
+            <small>Email</small>
+            <input type="email" name="email" id="email">
+          </label>
+          <label for="password" class="column">
+            <small>Password</small>
+            <input type="password" name="password" id="password">
+          <button onclick="document.all['loginiframe'].setAttribute('onload','checkAuth()')" style="width: 56px;margin-top: 9px;border-radius: 0px;border: 1px solid #34763C;background: #4BA956;padding: 3px;color: white;font-weight: bold;">Log in</button></label> 
+      </form>
+      </div>
+      
+    <script>
+      function checkAuth() {
+        var iframe = document.all['loginiframe']
+        var content = iframe.contentDocument.body
+        var innerText = content.innerText
+
+        if (innerText!='Missing email or password!') {
+          var parent = window.parent
+          parent.location.href=parent.location.href
+        }
+      }
+    </script>
+  </body>
+</html>
