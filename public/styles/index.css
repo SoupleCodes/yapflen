@@ -28,6 +28,9 @@ a {
 	text-decoration: none;
 }
 a:hover { text-decoration: underline }
+a:has(.post-user-displayname) {
+	text-decoration-color: #303030 !important;
+}
 ol, ul {
 	list-style: none;
 }
@@ -162,6 +165,7 @@ textarea {
 	display: flex;
 	flex-direction: row;
 }
+.wrap { flex-wrap: wrap;}
 .content-wrapper {
 	margin-left: auto;
 	margin-right: auto;
@@ -170,6 +174,8 @@ textarea {
 .content-wrapper > div {
 	max-width: 100%;
 }
+.f-l { float: left }
+.f-r { float: right }
 
 
 
@@ -328,6 +334,7 @@ textarea {
   align-items: center;
   content-visibility: auto;
   margin-bottom: 40px;
+  padding-bottom: 66vh;
 }
 .main-content > iframe {
 	display: contents;
@@ -512,6 +519,11 @@ iframe {
 }
 .card {
 	min-height: 135px;
+}
+.card-title {
+	font-weight: normal;
+	font-size: 125%;
+	margin-bottom: 10px;
 }
 .post-composer {
 	background: #F5F5F5 !important;
@@ -713,6 +725,7 @@ iframe {
 	backface-visibility: hidden;
 	transition: all .3s;
 }
+
 .post-container.new {
 	opacity: 0;
 }
@@ -733,8 +746,52 @@ iframe {
 	overflow: clip;
 	overflow: hidden;
 	flex-shrink: 0;
-	position: relative
+	position: relative;
+	cursor: pointer;
 }
+.post-user-icon-container:after {
+	content: "";
+	position:absolute;
+	
+	/* position tooltip correctly */
+	left:100%;
+	margin-left:-5px;
+   
+	/* vertically center */
+	top:50%;
+	transform:translateY(-50%);
+   
+	/* the arrow */
+	border:10px solid #000;
+	border-color: transparent black transparent transparent;
+	
+	opacity: 0;
+	transition: opacity .3s
+}
+.post-user-icon-container:before {
+	content: attr(data-profile-description);
+	position:absolute;
+	
+	top:50%;
+	transform:translateY(-50%);
+	
+	left:100%;
+	margin-left:15px;
+	
+	width:200px;
+	padding:10px;
+	border-radius:10px;
+	background:#000;
+	color: #fff;
+	text-align:center;
+  
+	opacity: 0;
+	transition: opacity .3s
+}
+.post-user-icon-container:hover:before, .post-user-icon-container:hover:after  {
+	opacity: 1
+}
+
 /* Online Indicators */
 .post-container[data-active="active"] .post-user-info-container::after,
 .post-container[data-active="inactive"] .post-user-info-container::after {
@@ -787,7 +844,7 @@ iframe {
 	-webkit-line-clamp: 18;
 	line-clamp: 18
 }
-.post-message-container p {
+.post-message-container p, .card-description p {
 	margin-bottom: 10px;
 	white-space: break-spaces;
 }

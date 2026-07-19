@@ -1,0 +1,120 @@
+#user-info {
+    display: flex;
+    margin-right: 10px;
+    flex-direction: column;
+    width: 372px;
+}
+#people-card, 
+#aboutme-card .card-title, 
+#aboutme-card .card-description > * {
+    padding: 10px 10px 10px 10px;
+}
+#aboutme-card .card-description img {
+    padding: 0px
+}
+#aboutme-card .card-title {
+    margin-bottom: 0px
+}
+.card-description img {
+    height: auto;
+}
+.card-description {
+    max-height: 70vh;
+    overflow: auto;
+}
+.list {
+    margin: 10px 0px 18px 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+#banner-media-links {
+    margin-top: auto;
+    margin-left: 10px;
+    display: flex;
+}
+.link {
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-right: 6px;
+}
+.group-user-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+
+.community-banner {
+    width: 245px;
+    height: 245px;
+}
+.community.info {
+    padding: 10px;
+    min-height: 80px;
+}
+
+
+#profile-banner-container {
+    background: linear-gradient(to bottom, transparent 0%, #66666680 50%, #00000080 100%);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 400px;
+    display: flex;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+#profile-banner-wrapper {
+    display: flex;
+    margin: auto auto 0px auto;
+    max-width: 1150px;
+    width: 100%;
+    padding: 20px;
+}
+#banner-user-pfp {
+    width: 75px;
+    height: 75px;
+    border: 2px solid white;
+    border-radius: 4px;
+    overflow: hidden
+}
+#banner-displayname-container {
+    padding: 10px;
+    font-size: 125%;
+    color: white;
+    margin: auto 0px;
+}
+#banner-user-displayname, #banner-user-username { 
+    text-shadow: 0 0 2px black 
+}
+@media screen and (width < 900px) {
+	#user-profile .content-wrapper {
+		flex-direction: column;
+	}
+	#user-info > div {
+		max-width: 100%;
+        flex-shrink: 0
+	}
+	#user-info {
+        width: 100%;
+        display: grid;
+		grid-template-columns: auto auto;
+		gap: 10px;
+		margin: 0px;
+        max-width: 100%;
+        width: 100%;
+	}
+    #aboutme-card {
+        order: -1;
+    }
+}
+@media screen and (width < 530px) {
+	#user-info {
+		display: flex;
+	}
+}

@@ -1,0 +1,108 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapflen: the quintessential darflen client.</title>
+    <link rel="icon" type="image/icon" href="/images/favicon.png">
+    <link type="text/css" href="/styles/index.css" rel="stylesheet">
+    <link type="text/css" href="/styles/user.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/video.js" defer></script>
+  </head>
+  
+  <body masonry-shrink="true" onresize="adjustMasonry()">
+    <div id="container">
+      <div id="navbar">
+        <a href="/" id="logo-container">
+          <div id="logo"></div>
+        </a>
+
+        <div id="searchbar">
+          <input placeholder="Search yapflen" onkeypress>
+
+          <form method="GET" autocapitalize="none" autocomplete="off" aria-expanded="true" aria-haspopup="true" aria-label="Search bar" action="/search" id="submitsearch">
+            <input type="hidden" class="hidden">
+           </form>
+        </div>
+
+        <div id="nav-account" class="loggedout">
+          <a onclick="authPopup()">Login</a><a>Sign up</a>
+        </div>
+      </div>
+      <div id="main">
+        <div id="profile-banner-container">
+          <div id="profile-banner-wrapper">
+            <div id="banner-user-pfp">
+              <img>
+            </div>
+            <div id="banner-displayname-container">
+              <h1 id="banner-user-displayname"></h1>
+              <p id="banner-user-username"></p>
+            </div>
+            <div id="banner-media-links"></div>
+          </div>
+        </div>
+        <div id="tabs-bar-container">
+          <div id="tabs-bar" onclick="switchTab(event,'scrollable-content')">
+            <a class="selected">Profile</a><a>Communities</a><a>Wall</a>
+          </div>
+        </div>
+        <div id="scrollable-content" style="left: 0px;">
+          <div id="user-profile" class="main-content" data-page="1">
+            <div class="content-wrapper row">
+              <div id="user-info">
+                <div id="people-card" class="card">
+                  <h1 class="card-title">People</h1>
+                  <div class="users-group">
+                    <small>Followers</small>
+                    <a id="followers-count" href="./followers" class="group-count f-r">156 people</a>
+                    <div id="followers-list" class="list">
+                    </div>
+
+                    <small>Following</small>
+                    <a id="following-count" href="./followers" class="group-count f-r">156 people</a>
+                    <div id="following-list" class="list">
+                    </div>
+
+                  </div>
+                </div>
+
+                <div id="aboutme-card" class="card">
+                  <h1 class="card-title">About me:</h1>
+                  <div class="card-description"></div>
+                </div>
+              </div>
+
+              <div class="posts-wrapper">
+                <div class="masonry-container">
+                  <div class="mobile"></div>
+                  <div class="column1"></div>
+                  <div class="column2"></div>
+                </div>
+              </div>
+            </div>
+            <iframe src="#" id="user-posts-iframe" name="user-posts-iframe" class="hidden"></iframe>
+          </div>
+
+          <div id="user-communities" class="main-content" onscroll="banrHeight()">
+            <div class="content-wrapper row wrap">
+              <div class="community card">
+                <div class="community-banner">
+                  <img src="https://static.darflen.com/uploads/large/7772ebfd21a2b8f847ef4d3c.jpg">
+                </div>
+
+                <div class="community info">
+                  <div class="card-title">The Programmers</div>
+                  <small>7 members</small>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

@@ -11,13 +11,13 @@ export function getToken(cookie) {
 }
 
 const placeholder = [
-        "What are you thinking?",
-        "What will you share today?",
-        "What are you doing?",
-        "What's something cool you saw today?",
-        "What's inspiring you today?",
-        "What's something you learned recently?",
-        "Got something on your mind?"
+    "What are you thinking?",
+    "What will you share today?",
+    "What are you doing?",
+    "What's something cool you saw today?",
+    "What's inspiring you today?",
+    "What's something you learned recently?",
+    "Got something on your mind?"
 ]
 
 

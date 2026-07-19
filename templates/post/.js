@@ -36,20 +36,21 @@ const placeholder = [
         "What comes to mind?"
 ]
 
+export const md = markdownit({
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(str, { language: lang }).value;
+        } catch (__) {}
+      }
+  
+      return ''; // use external default escaping
+    },
+    linkify: true
+})
+
 export async function buildPost(data, tmz, repost, token) {
     const response = new Response(html)
-    const md = markdownit({
-        highlight: function (str, lang) {
-          if (lang && hljs.getLanguage(lang)) {
-            try {
-              return hljs.highlight(str, { language: lang }).value;
-            } catch (__) {}
-          }
-      
-          return ''; // use external default escaping
-        },
-        linkify: true
-    })
 
     return new HTMLRewriter()
         .on('.post-container', {
@@ -70,6 +71,13 @@ export async function buildPost(data, tmz, repost, token) {
                 el.setAttribute("title", 'this user is ' + data.author.profile.status)
             }
         })
+        .on('.post-user-icon-container', {
+            element(el) {
+                el.setAttribute("data-profile-username", data.author.profile.username)
+                el.setAttribute("data-profile-join-date", returnDate(data.author.miscellaneous.creation_time * 1000, tmz))
+                el.setAttribute("data-profile-description", data.author.profile.description)
+            }
+        })
         .on('.post-user-icon-container img', {
             element(el) {
                 var pfpURL = data.author.profile.images.icon.medium
@@ -82,6 +90,11 @@ export async function buildPost(data, tmz, repost, token) {
             }
         })
 
+        .on('.post-user-displayname-container', {
+            element(el) {
+                el.setAttribute("href", "/users/" + data.author.profile.username)
+            }
+        })
         .on('.post-user-displayname', {
             element(el) {
                 el.setInnerContent(data.author.profile.display_name.trim()=="" ? data.author.profile.username : data.author.profile.display_name)

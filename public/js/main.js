@@ -14,8 +14,25 @@ function switchTab(event, el) {
     content.style.left = ((index * -100) ) + "%"
 }
 
-function adjustScrollableContent() {
-    
+function banrHeight() {
+    var banrEl = document.getElementById('profile-banner-container')
+    var tabsParent = document.getElementById('tabs-bar')
+    var targTab = tabsParent.querySelector('.selected')
+    var index = Array.prototype.indexOf.call(tabsParent.children, targTab)
+    var contentDiv = document.getElementById('scrollable-content').children[index]
+
+
+    var divScrollTop = contentDiv.scrollTop
+    var banrHeight = banrEl.clientHeight
+    if (banrHeight - divScrollTop > 400) {
+        return null
+    }
+    if (divScrollTop > 400) {
+        banrEl.style.height = "0px"
+    } else {
+        contentDiv.style.paddingTop = divScrollTop + 10
+        banrEl.style.height = (400 - divScrollTop) + "px"
+    }
 }
 
 function openPopup(content) {
@@ -168,23 +185,25 @@ function addEventsToPost(el) {
     var attachmentEl = el.querySelector('.post-attachment')
     if (attachmentEl) {
         var imgEl = attachmentEl.querySelector('img')
-        imgEl.addEventListener("click", function() {
-            var newPopupEl = imgEl.cloneNode(true)
-            var clientRect = imgEl.getBoundingClientRect()
-
-            newPopupEl.classList.add("popup")
-            newPopupEl.style.left = clientRect.left + "px"
-            newPopupEl.style.right = clientRect.right + "px"
-            newPopupEl.style.bottom = clientRect.bottom + "px"
-            newPopupEl.style.top = clientRect.top + "px"
-            newPopupEl.style.width = clientRect.width + "px"
-            newPopupEl.style.height = clientRect.height + "px"
-
-            openPopup(newPopupEl)
-            setTimeout(function() {
-                newPopupEl.classList.add("center")
-            }, 500)
-        })
+        if (imgEl) {
+            imgEl.addEventListener("click", function() {
+                var newPopupEl = imgEl.cloneNode(true)
+                var clientRect = imgEl.getBoundingClientRect()
+    
+                newPopupEl.classList.add("popup")
+                newPopupEl.style.left = clientRect.left + "px"
+                newPopupEl.style.right = clientRect.right + "px"
+                newPopupEl.style.bottom = clientRect.bottom + "px"
+                newPopupEl.style.top = clientRect.top + "px"
+                newPopupEl.style.width = clientRect.width + "px"
+                newPopupEl.style.height = clientRect.height + "px"
+    
+                openPopup(newPopupEl)
+                setTimeout(function() {
+                    newPopupEl.classList.add("center")
+                }, 500)
+            })
+        }
     }
 }
 
