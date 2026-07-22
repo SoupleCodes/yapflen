@@ -1,6 +1,7 @@
 import { buildPost } from "../templates/post/.js"
 import { getToken, updatePageWithCookie } from '../cookie.js'
 import { renderNotification } from "../templates/notification/.js"
+import { renderResult } from "../templates/result/.js"
 
 export async function httpFetch(route, method, body, responseType, token) {
     let link = 'https://api.darflen.com'
@@ -126,6 +127,17 @@ export async function onRequest(context) {
                     html += await buildPost(fetchResult.post, timezone, null, token)
                 }
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
+            case path.startsWith('/search/render'):
+                page = Number(searchParams.get('page')) - 1
+                var q = searchParams.get('q')
+
+                let searchPosts = await httpFetch('/search/?q=' + q + '/&p' + page, 'GET', null, 'json', token)
+                searchPosts = searchPosts.posts
+                for (let i = 0; i < searchPosts.length; i++) {
+                    var post = searchPosts[i]
+                    html += await buildPost(post, timezone, null, token)
+                }
+                return new Response(html, {headers: {'Content-Type': 'text/html'}})
             case path.startsWith('/api/notifications'):
                 const apiNotifs = await httpFetch('/notifications/get/1', 'GET', null, 'json', token)
                 const notifications = apiNotifs.result
@@ -136,6 +148,48 @@ export async function onRequest(context) {
                     html += await renderNotification(notification)
                 }
 
+                return new Response(html, {headers: {'Content-Type': 'text/html'}})
+            case path.startsWith('/render/search/autocomplete'):
+                html = ''
+                async function renderSearchGroup(results, name) {
+                    if (results.length<1) {
+                        return null
+                    }
+                    var result = ''
+                    for (let i = 0; i < results.length && i < 3; i++) {
+                        result += await renderResult(results[i])
+                    }
+
+                    if (result) {
+                        html += '<div class="search-result-group">'
+                        if (name) {
+                            html += '<small>' + name + '</small>'
+                        }
+                        html += result
+                        html += '</div>'
+                    }
+                }
+
+                let query = searchParams.get('query')
+                if (query.trim()=='') {
+                    return new Response("", {headers: {'Content-Type': 'text/html'}})
+                }
+                const [groupsResults, usersResults, postsResults] = await Promise.all([
+                    httpFetch('/search/communities?q=' + query, 'GET', null),
+                    httpFetch('/search/users?q=' + query, 'GET', null),
+                    httpFetch('/search?q=' + query, 'GET', null)
+                ])
+                if (!groupsResults.communites
+                    && !usersResults.users
+                    && !postsResults.posts
+                ) {
+                    return new Response("", {headers: {'Content-Type': 'text/html'}})
+                }
+                await Promise.all([
+                    renderSearchGroup(groupsResults.communities, 'Communities'),
+                    renderSearchGroup(usersResults.users, 'People'),
+                    renderSearchGroup(postsResults.posts, null)
+                ])
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
             case path.startsWith('/'):
                 const [explorePosts, popularPosts, trendingPosts] = await Promise.all([

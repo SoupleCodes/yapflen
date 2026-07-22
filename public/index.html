@@ -35,11 +35,13 @@
         </a>
 
         <div id="searchbar">
-          <input placeholder="Search yapflen" onkeypress>
-
           <form method="GET" autocapitalize="none" autocomplete="off" aria-expanded="true" aria-haspopup="true" aria-label="Search bar" action="/search" id="submitsearch">
-            <input type="hidden" class="hidden">
-           </form>
+            <input name="q" placeholder="Search yapflen" onfocus="document.all['search-results'].classList.remove('thin')" onblur="document.all['search-results'].classList.add('thin')" oninput="var frame=document.all['autocomplete-iframe'];if(this.value.trim()==''){document.all['search-results'].classList.add('thin')}else{frame.src='/render/search/autocomplete&query='+this.value;document.all['search-results'].classList.remove('thin')}">
+          </form>
+          <iframe class="hidden" name="autocomplete-iframe" onload="loadAutocomplete(this)"></iframe>
+
+          <div id="search-results" name="search-results" class="hidden">
+          </div>
         </div>
 
         <!--
@@ -53,6 +55,14 @@
         <div id="tabs-bar-container">
           <div id="tabs-bar" onclick="switchTab(event,'scrollable-content')">
             <a class="selected">All</a><a>Feed</a><a>Popular</a><a>Trending</a>
+            <div class="dropdown-wrapper redirect" style="position: absolute;height: 100%;">
+              <button id="change-mode" class="dropdown">Home</button>
+              <input name="mode" value="public" type="hidden">
+              <ul class="hidden" style="position: absolute;top: 34px;width: 123px;min-height: max-content !important;left: 10px;">
+                <li data-value="">Home</li>
+                <li data-value="communities">Communities</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div id="scrollable-content" style="left: 0px;">

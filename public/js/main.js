@@ -238,6 +238,8 @@ function infiniteScroll(me, group, id) {
             var iframe = document.getElementById(me.id + '-iframe')
             if (group==='feed') {
                 iframe.src = '/feed/render/&page=' + page
+            } else if (group==='search') {
+                iframe.src = '/search/render/&page=' + page + '/&q=' + document.all['q'].value
             } else {
                 iframe.src = '/explore/render/&page=' + page + '/&mode=' + group
             }
@@ -317,6 +319,23 @@ function listenForNewPostID(el) {
         }
     }
 }
+
+function loadAutocomplete(el) {
+    if (el.src == window.location.href) {
+        return null
+    }
+
+    var iframeDoc = el.contentDocument
+    var resultsEl = document.getElementById("search-results")
+    if (iframeDoc.readyState == 'complete') {
+        var frameContent = iframeDoc.body
+        if (frameContent) {
+            resultsEl.innerHTML = frameContent.innerHTML
+            resultsEl.classList.remove('hidden')
+        }
+    }
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
     adjustMasonry()
@@ -403,6 +422,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 ul.classList.add('hidden')
                 input.value = value
                 button.textContent = targEl.innerText
+                if (el.classList.contains('redirect')) {
+                    window.location.href = '/' + value
+                }
             }
         })
     })

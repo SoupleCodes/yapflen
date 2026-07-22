@@ -49,15 +49,6 @@
 }
 
 
-.community-banner {
-    width: 245px;
-    height: 245px;
-}
-.community.info {
-    padding: 10px;
-    min-height: 80px;
-}
-
 
 #profile-banner-container {
     background: linear-gradient(to bottom, transparent 0%, #66666680 50%, #00000080 100%);

@@ -22,6 +22,10 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 body {
 	line-height: 1;
 }
+.search-result-wrapper,
+a.community-card-wrapper {
+	text-decoration: unset !important;
+}
 a {
 	cursor: pointer;
 	color: #4BA956;
@@ -101,6 +105,28 @@ button {
 	background: white;
 	cursor: pointer
 }
+#change-mode {
+	padding: 9px 26px 7px 9px;
+	border-radius: 4px;
+	max-width: 100%;
+	width: 123px;
+	line-height: 1.2;
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 10px;
+	background: white !important
+}
+#change-mode::after {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	content: "⌃";
+	position: absolute;
+	top: 11px;
+	left: 108px;
+	z-index: 1;
+	transform: rotate(180deg);
+}
 button.submit {
 	background: #4BA956;
 	color: white;
@@ -176,6 +202,7 @@ textarea {
 }
 .f-l { float: left }
 .f-r { float: right }
+.thin { max-height: 0px !important }
 
 
 
@@ -198,6 +225,7 @@ textarea {
 	height: 100%;
 	max-width: 800px;
 	margin: 0px 10px;
+	position: relative
 }
 #searchbar input {
 	width: 100%;
@@ -218,11 +246,47 @@ textarea {
 	width: 15px;
 	height: 15px;
 	content: "";
-	position: relative;
-	top: -25px;
+	position: absolute;
+	top: 9px;
 	left: 7px;
 	z-index: 1;
 }
+
+#search-results {
+	margin-top: 1px;
+	background: #fff;
+	outline: 1px solid #4BA956;
+	position: relative;
+	z-index: 99999;
+	max-height: 605px;
+	transition: max-height .3s;
+  	overflow: hidden;
+}
+.search-result-group {
+	border-bottom: 1px solid #4BA956;
+}
+.search-result-group > small {
+	padding: 10px 10px 5px;
+	display: block;
+}
+.search-list-item {
+	display: flex;
+	flex-direction: row;
+	padding: 10px 10px;
+}
+.search-list-item:hover {
+	background: #d5d5d5;
+}
+.search-result-icon {
+	width: 40px;
+	height: 40px;
+}
+.search-result-detail {
+	margin-left: 7px;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
 #nav-account {
 	padding: 6px 0px 0px 14px;
     padding-top: 6px;
@@ -344,6 +408,7 @@ textarea {
 }
 #tabs-bar-container {
 	background: #F0F0F0;
+	position: relative;
 	height: 42px;
 	box-shadow: 0 0 2.4px 0 #00000054;
 	display: flex;
@@ -354,6 +419,10 @@ textarea {
 	margin-left: auto;
 	margin-right: auto;
 	display: flex;
+	max-width: 1103px;
+	width: 100%;
+	justify-content: center;
+	position: relative;
 }
 #tabs-bar a {
 	margin-left: 10px;
@@ -497,6 +566,19 @@ iframe {
 		right: 10px !important;
 		opacity: 0.8;
 	}
+	
+	.community-card {
+		display: flex !important;
+		flex-direction: row !important;
+		max-width: 100%  !important;
+		margin: 0px 10px;
+	}
+	#result-communities .content-wrapper {
+		width: 100%;
+	}
+	.community-card-wrapper {
+		width: 50%;
+	}
 }
 @media screen and (width < 530px) {
 	#stats-content {
@@ -508,6 +590,17 @@ iframe {
 	}
 }
 
+.community-card { 
+	max-width: 245px;
+}
+.community-banner {
+    width: 245px;
+    height: 245px;
+}
+.community.info {
+    padding: 10px;
+    min-height: 80px;
+}
 .card.back {
 	transform: rotateX(180deg);
 }
@@ -699,6 +792,7 @@ iframe {
 }
 .dropdown-wrapper li {
 	padding: 8px 8px;
+	cursor: pointer;
 }
 .dropdown-wrapper li:hover {
 	background: #F0F0F0

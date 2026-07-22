@@ -1,0 +1,66 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapflen: the quintessential darflen client.</title>
+    <link rel="icon" type="image/icon" href="/images/favicon.png">
+    <link type="text/css" href="/styles/index.css" rel="stylesheet">
+    <link type="text/css" href="/styles/user.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/video.js" defer></script>
+  </head>
+  
+  <body masonry-shrink="true" onresize="adjustMasonry()">
+    <div id="container">
+      <div id="navbar">
+        <a href="/" id="logo-container">
+          <div id="logo"></div>
+        </a>
+
+        <div id="searchbar">
+          <form method="GET" autocapitalize="none" autocomplete="off" aria-expanded="true" aria-haspopup="true" aria-label="Search bar" action="/search" id="submitsearch">
+            <input name="q" placeholder="Search yapflen" onfocus="document.all['search-results'].classList.remove('thin')" onblur="document.all['search-results'].classList.add('thin')" oninput="var frame=document.all['autocomplete-iframe'];if(this.value.trim()==''){document.all['search-results'].classList.add('thin')}else{frame.src='/render/search/autocomplete&query='+this.value;document.all['search-results'].classList.remove('thin')}">
+          </form>
+          <iframe class="hidden" name="autocomplete-iframe" onload="loadAutocomplete(this)"></iframe>
+
+          <div id="search-results" name="search-results" class="hidden">
+          </div>
+        </div>
+
+        <div id="nav-account" class="loggedout">
+          <a onclick="authPopup()">Login</a><a>Sign up</a>
+        </div>
+      </div>
+      <div id="main">
+        <div id="tabs-bar-container">
+          <div id="tabs-bar" onclick="switchTab(event,'scrollable-content')">
+            <a class="selected">Recent</a><a>Popular</a><a>New</a>
+          </div>
+        </div>
+        <div id="scrollable-content" style="left: 0px;">
+          <div id="recent-communities" class="main-content" data-page="1">
+            <div class="content-wrapper row wrap" style="gap: 15px;max-width: 770px;">
+
+            </div>
+          </div>
+
+
+          <div id="popular-communities" class="main-content" data-page="1">
+            <div class="content-wrapper row wrap" style="gap: 15px;max-width: 770px;">
+
+            </div>
+          </div>
+
+
+          <div id="new-communities" class="main-content" data-page="1">
+            <div class="content-wrapper row wrap" style="gap: 15px;max-width: 770px;">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

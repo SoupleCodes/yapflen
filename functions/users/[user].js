@@ -36,6 +36,8 @@ export async function onRequest(context) {
             })
     }
 
+    var description = userData.profile.description
+
     rewriter
         .on("title", {
             element(el) {
@@ -79,9 +81,18 @@ export async function onRequest(context) {
                 el.setInnerContent(userData.stats.following + ' people')
             }
         })
+        .on('#aboutme-card', {
+            element(el) {
+                if (description.trim()=="") {
+                    el.remove()
+                }
+            }
+        })
         .on('#aboutme-card .card-description', {
             element(el) {
-                el.setInnerContent(md.render(userData.profile.description), { html: true })
+                if (description.trim()!="") {
+                    el.setInnerContent(md.render(description), { html: true })
+                }
             }
         })
         .on('#followers-list', {
