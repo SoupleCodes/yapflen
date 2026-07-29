@@ -1,5 +1,5 @@
-import { getToken, updatePageWithCookie } from "../cookie";
-import { httpFetch } from "./[[index]]";
+import { getToken, updatePageWithCookie } from "../cookie.js";
+import { httpFetch } from "./[[index]].js";
 import { renderCommunityCell } from '../templates/community/.js'
 import { buildPost } from "../templates/post/.js";
 

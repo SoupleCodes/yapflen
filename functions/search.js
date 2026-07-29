@@ -22,7 +22,7 @@ export async function onRequest(context) {
                 async element(el) {
                     for (let i = 0; i < posts.length; i++) {
                         var post = posts[i]
-                        el.append(await buildPost(post, timezone, null, token), { 
+                        el.append(await buildPost(post, timezone, null, token, post), { 
                             html: true, 
                             contentOptions: 'after' 
                         })

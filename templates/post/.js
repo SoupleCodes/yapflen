@@ -40,7 +40,9 @@ export const md = markdownit({
     highlight: function (str, lang) {
       if (lang && hljs.getLanguage(lang)) {
         try {
-          return hljs.highlight(str, { language: lang }).value;
+            return '<div class="code-block"><pre><code class="hljs">' +
+                hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+                '</code></pre><button onclick="cpy()" class="copyandpaste">copy</button></div>';
         } catch (__) {}
       }
   
@@ -49,9 +51,10 @@ export const md = markdownit({
     linkify: true
 })
 
-export async function buildPost(data, tmz, repost, token) {
+export async function buildPost(data, tmz, repost, token, parentPost, communityOwner) {
     const response = new Response(html)
-
+try {
+    
     return new HTMLRewriter()
         .on('.post-container', {
             element(el) {
@@ -61,26 +64,32 @@ export async function buildPost(data, tmz, repost, token) {
                 } else {
                     el.setAttribute("id", 'post-' + data.id) 
                 }
-                el.setAttribute("data-author", data.author.profile.username)
-                el.setAttribute("data-active", data.author.profile.status)
+                if (data.author.error) {
+                    el.setAttribute("data-author", 'deleted user')
+                } else {
+                    el.setAttribute("data-author", data.author.profile.username)
+                    el.setAttribute("data-active", data.author.profile.status)
+                }
             }
         })
 
         .on('.post-user-icon-container', {
             element(el) {
-                el.setAttribute("title", 'this user is ' + data.author.profile.status)
-            }
-        })
-        .on('.post-user-icon-container', {
-            element(el) {
-                el.setAttribute("data-profile-username", data.author.profile.username)
-                el.setAttribute("data-profile-join-date", returnDate(data.author.miscellaneous.creation_time * 1000, tmz))
-                el.setAttribute("data-profile-description", data.author.profile.description)
+                if (data.author.error) {
+                    el.setAttribute("data-author", 'deleted user')
+                } else {
+                    el.setAttribute("title", 'this user is ' + data.author.profile.status)
+                    el.setAttribute("data-profile-username", data.author.profile.username)
+                    el.setAttribute("data-profile-join-date", returnDate(data.author.miscellaneous.creation_time * 1000, tmz))
+                    el.setAttribute("data-profile-description", data.author.profile.description)
+                }
+                    
             }
         })
         .on('.post-user-icon-container img', {
             element(el) {
-                var pfpURL = data.author.profile.images.icon.medium
+                var pfpURL = data.author.error ? 
+                            '/images/default.png' : data.author.profile.images.icon.medium
                 if (pfpURL=='https://static.darflen.com/uploads/medium/icon.jpg') {
                     if (data.author.profile.username!='darflen') {
                         pfpURL = '/images/default.png'
@@ -92,12 +101,25 @@ export async function buildPost(data, tmz, repost, token) {
 
         .on('.post-user-displayname-container', {
             element(el) {
-                el.setAttribute("href", "/users/" + data.author.profile.username)
+                if (data.author.error) {
+                    el.setAttribute("href", "/")
+                } else {
+                    el.setAttribute("href", "/users/" + data.author.profile.username)
+                }
             }
         })
         .on('.post-user-displayname', {
             element(el) {
-                el.setInnerContent(data.author.profile.display_name.trim()=="" ? data.author.profile.username : data.author.profile.display_name)
+                if (data.author.error) {
+                    el.setInnerContent('deleted user')
+                } else { 
+                    el.setInnerContent(data.author.profile.display_name.trim()=="" ? data.author.profile.username : data.author.profile.display_name)
+                    if (data.author.profile.username===communityOwner) {
+                        el.after('<span class="post-user-displayname-owner">OWNER</span>', {
+                            html: true
+                        })
+                    }
+                }
                 if (data.repost) {
                     el.append('<span>', { html: true, ContentOptions: 'after'})
                     el.append(' reposted:')
@@ -153,8 +175,8 @@ export async function buildPost(data, tmz, repost, token) {
         // Reposts
         .on('.post-repost', {
             async element(el) {
-                if (data.repost) {
-                    el.append(await buildPost(data.repost, tmz, true), { html: true, ContentOptions: 'after'})
+                if (data.repost && (parentPost?.repost?.repost?.repost?.repost!=data)) {
+                    el.append(await buildPost(data.repost, tmz, true, null, parentPost), { html: true, ContentOptions: 'after'})
                 } else {
                     el.remove()
                 }
@@ -213,7 +235,7 @@ export async function buildPost(data, tmz, repost, token) {
             }
         })
 
-        // For viewing multiple
+        // For viewing multiple images
         .on('.post-image-slider', {
             element(el) {
                 if (!(data.files && data.files.length>1)) {
@@ -265,4 +287,7 @@ export async function buildPost(data, tmz, repost, token) {
 
         
         .transform(response).text()
+    } catch (error) {
+        console.log(error)
+    }
 }

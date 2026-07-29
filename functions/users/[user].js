@@ -27,7 +27,7 @@ export async function onRequest(context) {
                 async element(el) {
                     for (let i = 0; i < posts.length; i++) {
                         var post = posts[i]
-                        el.append(await buildPost(post, timezone, null, token), { 
+                        el.append(await buildPost(post, timezone, null, token, post), { 
                             html: true, 
                             contentOptions: 'after' 
                         })
@@ -51,7 +51,7 @@ export async function onRequest(context) {
         })
         .on('#profile-banner-container', {
             element(el) {
-                el.setAttribute('style', 'background-image:url("' + userData.profile.images.banner.large + '")')
+                el.setAttribute('style', 'background:linear-gradient(transparent 0%, transparent 50%, rgba(0, 0, 0, 0.5) 100%),url("' + userData.profile.images.banner.large + '")')
             }
         })
         .on('#banner-user-pfp img', {
@@ -122,6 +122,8 @@ export async function onRequest(context) {
                 userData.profile.links.forEach(l => {
                     el.append('<div class="link"><a target="_blank" href="', { html: true, ContentOptions: 'after'})
                     el.append(l.link)
+                    el.append('" title="', { html: true, ContentOptions: 'after'})
+                    el.append(l.title)
                     el.append('"><img src="', { html: true, ContentOptions: 'after'})
                     el.append('https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=24&url=' + l.link)
                     el.append('"/></a></div>', { html: true, ContentOptions: 'after'})

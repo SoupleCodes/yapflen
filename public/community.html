@@ -1,0 +1,95 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | Yapflen</title>
+    <link rel="icon" type="image/icon" href="/images/favicon.png">
+    <link type="text/css" href="/styles/index.css" rel="stylesheet">
+    <link type="text/css" href="/styles/user.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/video.js" defer></script>
+  </head>
+  
+  <body masonry-shrink="true" onresize="adjustMasonry()">
+    <div id="container">
+      <div id="navbar">
+        <a href="/" id="logo-container">
+          <div id="logo"></div>
+        </a>
+
+        <div id="searchbar">
+          <form method="GET" autocapitalize="none" autocomplete="off" aria-expanded="true" aria-haspopup="true" aria-label="Search bar" action="/search" id="submitsearch">
+            <input name="q" placeholder="Search yapflen" onfocus="document.all['search-results'].classList.remove('thin')" onblur="document.all['search-results'].classList.add('thin')" oninput="var frame=document.all['autocomplete-iframe'];if(this.value.trim()==''){document.all['search-results'].classList.add('thin')}else{frame.src='/render/search/autocomplete&query='+this.value;document.all['search-results'].classList.remove('thin')}">
+          </form>
+          <iframe class="hidden" name="autocomplete-iframe" onload="loadAutocomplete(this)"></iframe>
+
+          <div id="search-results" name="search-results" class="hidden">
+          </div>
+        </div>
+
+        <div id="nav-account" class="loggedout">
+          <a onclick="authPopup()">Login</a><a>Sign up</a>
+        </div>
+      </div>
+      <div id="main">
+        <div id="scrollable-content" style="left: 0px;">
+            <div class="main-content" data-page="1" style="padding-top: 10px;margin: 0px;" id="community-content" onscroll="infiniteScroll(this,'communities','thesouplers')">
+                <div class="content-wrapper row">
+                  <div id="user-info-wrapper">
+
+                    <div class="card" id="community-info-card">
+                        <div id="community-banner-wrapper">
+                            <img class="community-banner" src="https://static.darflen.com/uploads/large/537db5052280233ab32ac45c.jpg">
+                            
+                            <div id="community-pfp" style="width: 60px;height: 60px;margin-left: auto;margin-right: auto;margin-top: -30px;border-radius: 100%;overflow: hidden;outline: 2px solid #ffffffad;">
+                                <img src="https://static.darflen.com/uploads/large/355a38701e0832e38dc6f247.jpg">
+                            </div>
+                        </div>
+                        <div id="community-info">
+                            <div id="community-names">
+                                <div id="community-displayname-container">
+                                    <p id="community-display-name">🏆🍲 The Souplites 🍲🏆</p>
+                                    <small id="community-username">thesouplers</small>
+                                </div>
+                            </div>
+                            <div id="community-description">
+                            </div>
+                            <div id="community-stats">
+                                <div class="stats-group column" id="member-count">
+                                    <h1 class="stats-count">1459</h1>
+                                    <p class="stats-title">Members</p>
+                                </div>
+
+                                <div class="stats-group column" id="posts-count">
+                                    <h1 class="stats-count">10</h1>
+                                    <p class="stats-title">Posts</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="community-members-group" class="card" style="padding: 10px;">
+                      <h1 class="card-title" style="color: grey;">All members</h1>
+                      <div id="community-members-list" class="list">
+                      </div>
+                    </div>
+    
+                  </div>
+    
+                  <div class="posts-wrapper">
+                    <div class="masonry-container">
+                      <div class="mobile hidden"></div>
+                      <div class="column1"></div>
+                      <div class="column2"></div>
+                    </div>
+                  </div>
+                </div>
+                <iframe src="#" id="user-posts-iframe" name="user-posts-iframe" class="hidden" data-ruffle-polyfilled=""></iframe>
+              <div class="loading"></div></div>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

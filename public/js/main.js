@@ -369,7 +369,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 parent.setAttribute("data-composer-active", true)
                 document.querySelector('.composer-group.' + action).classList.remove("inactive")
             })
-            cancel.addEventListener("click", function() {
+            cancel.addEventListener("click", function(e) {
+                e.preventDefault()
                 closeComposer()
             })
             submit.addEventListener("click", function() {

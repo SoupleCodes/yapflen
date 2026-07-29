@@ -7,7 +7,6 @@
         "/images/*",
         "/js/*",
         "/styles/*",
-        "/login",
-        "/users/"
+        "/login"
     ]
 }

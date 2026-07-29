@@ -54,7 +54,7 @@ export async function onRequest(context) {
             async element(el) {
                 for (let i = 0; i < posts.length; i++) {
                     var post = posts[i]
-                    el.append(await buildPost(post, timezone, null, token), { 
+                    el.append(await buildPost(post, timezone, null, token, post), { 
                         html: true, 
                         contentOptions: 'after' 
                     })
@@ -105,7 +105,7 @@ export async function onRequest(context) {
                 explorePagePosts = explorePagePosts.posts
                 for (let i = 0; i < explorePagePosts.length; i++) {
                     var post = explorePagePosts[i]
-                    html += await buildPost(post, timezone, null, token)
+                    html += await buildPost(post, timezone, null, token, post)
                 }
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
             case path.startsWith('/feed/render'):
@@ -115,7 +115,7 @@ export async function onRequest(context) {
                 feedPosts = feedPosts.posts
                 for (let i = 0; i < feedPosts.length; i++) {
                     var post = feedPosts[i]
-                    html += await buildPost(post, timezone, null, token)
+                    html += await buildPost(post, timezone, null, token, post)
                 }
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
             case path.startsWith('/post/render'):
@@ -124,7 +124,7 @@ export async function onRequest(context) {
                     var id = postsArr[i]
                     var fetchResult = await httpFetch('/posts/' + id, 'GET', null)
 
-                    html += await buildPost(fetchResult.post, timezone, null, token)
+                    html += await buildPost(fetchResult.post, timezone, null, token, post)
                 }
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
             case path.startsWith('/search/render'):
@@ -135,7 +135,7 @@ export async function onRequest(context) {
                 searchPosts = searchPosts.posts
                 for (let i = 0; i < searchPosts.length; i++) {
                     var post = searchPosts[i]
-                    html += await buildPost(post, timezone, null, token)
+                    html += await buildPost(post, timezone, null, token, post)
                 }
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
             case path.startsWith('/api/notifications'):
@@ -150,7 +150,6 @@ export async function onRequest(context) {
 
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
             case path.startsWith('/render/search/autocomplete'):
-                html = ''
                 async function renderSearchGroup(results, name) {
                     if (results.length<1) {
                         return null
@@ -174,6 +173,8 @@ export async function onRequest(context) {
                 if (query.trim()=='') {
                     return new Response("", {headers: {'Content-Type': 'text/html'}})
                 }
+
+                html = '<div style="padding: 15px 10px;background: #e6e6e6;">Search yapflen for "' + query + '"</div>'
                 const [groupsResults, usersResults, postsResults] = await Promise.all([
                     httpFetch('/search/communities?q=' + query, 'GET', null),
                     httpFetch('/search/users?q=' + query, 'GET', null),

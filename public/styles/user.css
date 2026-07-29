@@ -1,14 +1,17 @@
-#user-info {
+#user-info-wrapper {
     display: flex;
     margin-right: 10px;
     flex-direction: column;
     width: 372px;
 }
 #people-card, 
-#aboutme-card .card-title, 
+#aboutme-card .card-title,
 #aboutme-card .card-description > * {
     padding: 10px 10px 10px 10px;
 }
+#people-card { border-top: 2px solid #4BA956 }
+#aboutme-card { border-top: 2px solid #D18080 }
+#aboutme-card a { color: #D18080 !important }
 #aboutme-card .card-description img {
     padding: 0px
 }
@@ -18,7 +21,7 @@
 .card-description img {
     height: auto;
 }
-.card-description {
+.card-description, #community-description {
     max-height: 70vh;
     overflow: auto;
 }
@@ -50,11 +53,39 @@
 
 
 
+.notice {
+    border: 1px solid #DBDBDB;
+    background: #F0F0F0;
+    padding: 0px 12px;
+    display: flex;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.notice button {
+    padding: 6px;
+    margin-left: auto;
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    color: white;
+    border: 1px solid #34763C;
+    background: #4BA956;
+    border-radius: 3px;
+    font-weight: bold;
+    max-width: 100%;
+}
+.notice-message {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
+
 #profile-banner-container {
     background: linear-gradient(to bottom, transparent 0%, #66666680 50%, #00000080 100%);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
     height: 400px;
     display: flex;
     flex-shrink: 0;
@@ -66,6 +97,7 @@
     max-width: 1150px;
     width: 100%;
     padding: 20px;
+    position: relative;
 }
 #banner-user-pfp {
     width: 75px;
@@ -87,25 +119,87 @@
 	#user-profile .content-wrapper {
 		flex-direction: column;
 	}
-	#user-info > div {
+	#user-info-wrapper > div {
 		max-width: 100%;
-        flex-shrink: 0
+        flex-shrink: 1
 	}
-	#user-info {
-        width: 100%;
-        display: grid;
-		grid-template-columns: auto auto;
-		gap: 10px;
-		margin: 0px;
+	#user-info-wrapper {
+        gap: 10px;
+        margin: 0px;
         max-width: 100%;
         width: 100%;
+        flex-direction: row;
 	}
+    #community-content #user-info-wrapper {
+        flex-direction: column;
+        margin-right: 10px
+    }
     #aboutme-card {
         order: -1;
     }
 }
 @media screen and (width < 530px) {
-	#user-info {
-		display: flex;
+	#user-info-wrapper {
+		flex-direction: column;
+        gap: 0px;
 	}
+    #profile-banner-wrapper {
+        margin: auto;
+        flex-direction: column;
+        max-width: min-content;
+    }
+    #banner-media-links {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #banner-displayname-container {
+        text-align: center;
+    }
+    #banner-user-pfp {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #community-content .content-wrapper {
+        flex-direction: column !important;
+    }
+    #community-content {
+        padding: 0px !important;
+    }
+}
+
+#community-stats::after {
+    content: '';
+    position: absolute;
+    background: #9c9c9c;
+    height: 33px;
+    width: 1px;
+    margin-left: 18px;
+}
+#community-banner-wrapper {
+    height: 183px;
+    width: 100%;
+    max-width: 100%;
+}
+#community-description {
+    margin: 5px 20px 20px 20px;
+}
+#community-info { padding-top: 28px }
+#community-stats {
+    background: #e6e6e6;
+    padding: 18px;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-around;
+}
+#community-displayname-container {
+    text-align: center;
+    color: black;
+    padding: 10px;
+    font-size: 125%;
+    margin: auto 0px;
+    padding-bottom: 20px;
+}
+.stats-group {
+    text-align: center;
 }
