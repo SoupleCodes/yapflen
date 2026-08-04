@@ -66,12 +66,12 @@ function authPopup() {
     openPopup(loginIframe)
 }
 
-function adjustMasonry() {
+function adjustMasonry(v) {
     var scr_w = document.body.offsetWidth
     var mobile = scr_w < 770
     var body = document.body
     var masonryShrink = body.getAttribute('masonry-shrink')
-    if ((masonryShrink!='false') == (mobile!=false)) {
+    if (((masonryShrink!='false') == (mobile!=false))&&!v) {
         return false;
     }
     body.setAttribute('masonry-shrink', masonryShrink!='true')
@@ -116,10 +116,114 @@ function adjustMasonry() {
     } 
 }
 
-function addEventsToPost(el) {
+function cloneNodeAtExactPos(el) {
+    var newPopupEl = el.cloneNode(true)
+    var clientRect = el.getBoundingClientRect()
+
+    newPopupEl.style.left = clientRect.left + "px"
+    newPopupEl.style.right = clientRect.right + "px"
+    newPopupEl.style.bottom = clientRect.bottom + "px"
+    newPopupEl.style.top = clientRect.top + "px"
+    newPopupEl.style.width = clientRect.width + "px"
+    newPopupEl.style.height = clientRect.height + "px"
+
+    return newPopupEl
+}
+
+function addEventsToPostComments(el) {
+    var comments = el.querySelectorAll('.comment')
+    Array.from(comments).forEach(node => {
+        var replyToggle = node.querySelector('.reply-toggle a')
+        var repliesWrapper = node.querySelector('.replies-wrapper')
+        var repliesEl = node.querySelector('.replies')
+
+        if (replyToggle && repliesWrapper) {
+            var height = repliesEl.getBoundingClientRect().height + 15
+            repliesWrapper.style.maxHeight = height + 'px'
+            replyToggle.addEventListener("click", function(e) {
+                e.preventDefault()
+
+                var closed = repliesWrapper.classList.contains('collapsed')
+                if (closed) {
+                    replyToggle.textContent = 'Close replies ↑'
+                    repliesWrapper.style.height = repliesWrapper.style.maxHeight
+                    repliesWrapper.classList.remove('collapsed')
+                } else {
+                    replyToggle.textContent = 'Open replies ↓'
+                    repliesWrapper.style.height = '0px'
+                    repliesWrapper.classList.add('collapsed')
+                }
+            })
+        }
+    })
+}
+
+function addEventsToPost(el, popup) {
+    var postId = el.getAttribute("id").split("post-")[1]
     setTimeout(function() {
         el.classList.remove("new")
     },500)
+
+    
+    var postReplyAreaWrapper = el.querySelector('.post-reply-area-wrapper')
+    var postReplyArea = el.querySelector('.post-reply-area')
+    var postCancel = el.querySelector('.cancel')
+    var postSubmit = el.querySelector('.submit')
+
+    var postContent = el.querySelector('.comment-reply-wrapper textarea')
+    var txtArea = el.querySelector('.post-actions-textarea')
+    var replyTxtArea = el.querySelector('.post-reply-area .post-actions-textarea')
+    
+    var replyWrapper = el.querySelector('.comment-reply-wrapper')
+    var commentsEl = el.querySelector('.comments')
+
+    function addComment(response) {
+        commentsEl.insertAdjacentHTML("afterBegin", response)
+        txtArea.classList.remove('hidden')
+        replyTxtArea.classList.remove('hidden')
+        replyWrapper.classList.add('hidden')
+
+        var height = postReplyArea.getBoundingClientRect().height
+        postReplyAreaWrapper.classList.add('thin')
+
+        setTimeout(function() {
+            postReplyAreaWrapper.classList.remove('thin')
+            postReplyAreaWrapper.style.height = height + 'px'
+        },500)
+    }
+
+    if (txtArea) {
+        txtArea.addEventListener("click", function() {
+            if (postReplyArea) {
+                postReplyAreaWrapper.classList.remove('thin')
+                txtArea.classList.add('hidden')
+
+                if (el.querySelector('.comments') && !el.querySelector('.comment')) {
+                    http("GET", '/comments/&post_id=' + postId, null, function(html){
+                        commentsEl.insertAdjacentHTML("beforeEnd", html)
+                        addEventsToPostComments(commentsEl)
+                    })
+                }
+            }
+        })
+        postCancel.addEventListener("click", function() {
+            if (el.querySelector('.comment')) {
+                replyWrapper.classList.add('hidden')
+                replyTxtArea.classList.remove('hidden')
+            } else {
+                postReplyAreaWrapper.classList.add('thin')
+                txtArea.classList.remove('hidden')
+            }
+        })
+        postSubmit.addEventListener("click", function() {
+            http("POST", '/post/comment/&post_id=' + postId + '&textarea=' + escape(postContent.value), null, addComment)
+        })
+        replyTxtArea.addEventListener("click", function() {
+            replyTxtArea.classList.add('hidden')
+            postReplyArea.appendChild(replyWrapper)
+            replyWrapper.classList.remove('hidden')
+        })
+    }
 
     var imageSlider = el.querySelector('.post-image-slider')
     if (imageSlider) {
@@ -170,11 +274,55 @@ function addEventsToPost(el) {
         if (postMessageEl.offsetHeight < postMessageEl.scrollHeight ||
             postMessageEl.offsetWidth < postMessageEl.scrollWidth) {
                 var linkEl = document.createElement("a")
-                linkEl.href = '/post/' + el.getAttribute("id").split("post-")[1]
+                linkEl.href = '/post/' + postId
                 linkEl.innerText = 'Read more...'
                 linkEl.classList.add("post-readmore")
                 postMessageEl.insertAdjacentElement("afterend", linkEl)
         }
+        postMessageEl.addEventListener("click", function() {
+            var postPopup = document.getElementById("post-popup")
+            if (!postPopup && !popup) {
+                postPopup = cloneNodeAtExactPos(el)
+                addEventsToPost(postPopup, true)
+                var popupPostWrapper = document.createElement('div')
+                popupPostWrapper.id = 'post-container-wrapper'
+                popupPostWrapper.appendChild(postPopup)
+
+                popupPostWrapper.addEventListener("click", function(e) {
+                    if (e.target.id!=='post-container-wrapper') {
+                        return null
+                    }
+
+                    popupPostWrapper.scroll({ behavior: 'instant', top: 0 })
+                    postPopup.classList.remove('post-popup')
+                    postPopup.style.height = 'fit-content'
+                    postPopup.style.height = 'max-content'
+                    var newPost
+                    setTimeout(function() {
+                        document.getElementById("main").classList.remove('transparent')
+                        newPost = postPopup.cloneNode(true)
+                        newPost.style = ''
+                        addEventsToPost(newPost)
+                        el.insertAdjacentElement('afterEnd', newPost)
+                        el.remove()
+                        newPost.querySelector('.comments').scrollTop = postPopup.querySelector('.comments').scrollTop
+                    },500)
+                    setTimeout(function () {
+                        postPopup.remove()
+                        popupPostWrapper.remove()
+                        addEventsToPostComments(newPost.querySelector('.comments'))
+                    }, 750)
+                })
+
+                document.body.appendChild(popupPostWrapper)
+                postPopup.querySelector('.comments').scrollTop = commentsEl.scrollTop
+                setTimeout(function() {
+                    addEventsToPostComments(postPopup.querySelector('.comments'))
+                    postPopup.classList.add('post-popup')
+                },500)
+                document.getElementById("main").classList.add('transparent')
+            }
+        })
     }
 
     var videoEl = el.querySelector('.video-player')
@@ -187,16 +335,8 @@ function addEventsToPost(el) {
         var imgEl = attachmentEl.querySelector('img')
         if (imgEl) {
             imgEl.addEventListener("click", function() {
-                var newPopupEl = imgEl.cloneNode(true)
-                var clientRect = imgEl.getBoundingClientRect()
-    
+                var newPopupEl = cloneNodeAtExactPos(imgEl)
                 newPopupEl.classList.add("popup")
-                newPopupEl.style.left = clientRect.left + "px"
-                newPopupEl.style.right = clientRect.right + "px"
-                newPopupEl.style.bottom = clientRect.bottom + "px"
-                newPopupEl.style.top = clientRect.top + "px"
-                newPopupEl.style.width = clientRect.width + "px"
-                newPopupEl.style.height = clientRect.height + "px"
     
                 openPopup(newPopupEl)
                 setTimeout(function() {
@@ -338,7 +478,7 @@ function loadAutocomplete(el) {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    adjustMasonry()
+    adjustMasonry(true)
 
     // Add events to posts
     document.querySelectorAll('.post-container').forEach((el) => {

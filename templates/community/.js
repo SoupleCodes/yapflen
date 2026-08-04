@@ -6,7 +6,7 @@ export async function renderCommunityCell(data, token) {
     return new HTMLRewriter()
         .on('.community-card-wrapper', {
             element(el) {
-                el.setAttribute("href", '/communites/' + data.profile.name)
+                el.setAttribute("href", '/communities/' + data.profile.name)
             }
         })
         .on('.community-banner img', {

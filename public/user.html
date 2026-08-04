@@ -8,6 +8,7 @@
     <link type="text/css" href="/styles/user.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
     <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/xhr.js"></script>
     <script type="text/javascript" src="/js/video.js" defer></script>
   </head>
   
@@ -36,7 +37,7 @@
         <div id="profile-banner-container">
           <div id="profile-banner-wrapper">
             <div id="banner-user-pfp">
-              <img>
+              <img onerror="this.src='/images/default.png'"/>
             </div>
             <div id="banner-displayname-container">
               <h1 id="banner-user-displayname"></h1>

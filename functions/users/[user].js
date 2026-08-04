@@ -1,5 +1,5 @@
 import { getToken, updatePageWithCookie } from "../../cookie";
-import { buildPost, md } from "../../templates/post/.js";
+import { buildPost, md, pfp } from "../../templates/post/.js";
 import { httpFetch } from '../[[index]].js'
 
 export async function onRequest(context) {
@@ -101,7 +101,7 @@ export async function onRequest(context) {
                     el.append('<div class="group-user-icon"><a href="/users/', { html: true, ContentOptions: 'after'})
                     el.append(o.profile.username)
                     el.append('"><img src="', { html: true, ContentOptions: 'after'})
-                    el.append(o.profile.images.icon.medium)
+                    el.append(pfp(o))
                     el.append('"/></a></div>', { html: true, ContentOptions: 'after'})
                 })
             }
@@ -112,7 +112,7 @@ export async function onRequest(context) {
                     el.append('<div class="group-user-icon"><a href="/users/', { html: true, ContentOptions: 'after'})
                     el.append(o.profile.username)
                     el.append('"><img src="', { html: true, ContentOptions: 'after'})
-                    el.append(o.profile.images.icon.medium)
+                    el.append(pfp(o))
                     el.append('"/></a></div>', { html: true, ContentOptions: 'after'})
                 })
             }
@@ -128,6 +128,16 @@ export async function onRequest(context) {
                     el.append('https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=24&url=' + l.link)
                     el.append('"/></a></div>', { html: true, ContentOptions: 'after'})
                 })
+            }
+        })
+        .on('.content-wrapper', {
+            element(el) {
+                if (userData.profile.username==='ii') {
+                    el.after(`<div class="advertisement"><a target="_blank" href="https://pixelcatsend.com/village&amp;id=19448">
+                        <img src="https://www.pixelcatsend.com/ads/uploads/${100 + Math.floor(Math.random() * 288)}.png">
+                        </a></div>`, 
+                    { html: true, ContentOptions: 'after'})
+                }
             }
         })
 

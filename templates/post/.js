@@ -3,7 +3,7 @@ import { renderVideoEl } from '../video/.js'
 import markdownit from 'markdown-it'
 import hljs from 'highlight.js';
 
-function returnDate(d, tmz) {
+export function returnDate(d, tmz) {
     var daysElasped = Math.floor((new Date() - new Date(d)) / 86400000)
     if (daysElasped > 1) {
         return new Date(d).toLocaleTimeString([],{ month: "long", day: "numeric", year: "numeric", timeZone: tmz }).split(" at ")[0]
@@ -51,6 +51,18 @@ export const md = markdownit({
     linkify: true
 })
 
+export function pfp(data) {
+    var pfpURL = data.author?.error 
+                ?  '/images/default.png' : (data.profile?.images.icon.medium || data.author?.profile.images.icon.medium)
+    if (pfpURL=='https://static.darflen.com/uploads/medium/icon.jpg') {
+        if (data.author?.profile?.username!='darflen') {
+            pfpURL = '/images/default.png'
+        }
+    }
+
+    return pfpURL
+}
+
 export async function buildPost(data, tmz, repost, token, parentPost, communityOwner) {
     const response = new Response(html)
 try {
@@ -88,14 +100,7 @@ try {
         })
         .on('.post-user-icon-container img', {
             element(el) {
-                var pfpURL = data.author.error ? 
-                            '/images/default.png' : data.author.profile.images.icon.medium
-                if (pfpURL=='https://static.darflen.com/uploads/medium/icon.jpg') {
-                    if (data.author.profile.username!='darflen') {
-                        pfpURL = '/images/default.png'
-                    }
-                }
-                el.setAttribute("src", pfpURL ?? '/images/default.png') 
+                el.setAttribute("src", pfp(data) ?? '/images/default.png') 
             }
         })
 
@@ -165,9 +170,21 @@ try {
             }
         })
 
+    /*
         .on('.reposts.post-action small', {
             element(el) {
                 el.setInnerContent(data.stats.reposts)
+            }
+        })
+    */
+
+
+        // Post reply area
+        .on('.post-reply-area-wrapper', {
+            element(el) {
+                if (repost) {
+                    el.remove()
+                }
             }
         })
 
@@ -266,6 +283,12 @@ try {
                 }
             }
         })
+
+        /*
+        <div class="approvedbyjinx post-action" style="margin-left: auto;">
+        <img src="https://static.darflen.com/uploads/large/d163c23911c288af21de3ecf.jpg">
+      <small>jinx approved</small></div>
+      */
 
 
         // User actions

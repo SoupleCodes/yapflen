@@ -1,7 +1,10 @@
 import { buildPost } from "../templates/post/.js"
+import { buildComment } from "../templates/comment/.js"
 import { getToken, updatePageWithCookie } from '../cookie.js'
 import { renderNotification } from "../templates/notification/.js"
-import { renderResult } from "../templates/result/.js"
+import { renderResult } from "../templates/result/.js"/*
+import { Hono } from 'hono'
+import { trimTrailingSlash } from "hono/trailing-slash"*/
 
 export async function httpFetch(route, method, body, responseType, token) {
     let link = 'https://api.darflen.com'
@@ -30,7 +33,15 @@ export async function httpFetch(route, method, body, responseType, token) {
         console.error(error)
     }
 }
+/*
+const app = new Hono()
+app
+    .use(trimTrailingSlash)
+    .get('/', (c) => {
+        return c.html('hi')
+    })
 
+    */
 
 export async function onRequest(context) {
     const { request, env } = context
@@ -127,6 +138,28 @@ export async function onRequest(context) {
                     html += await buildPost(fetchResult.post, timezone, null, token, post)
                 }
                 return new Response(html, {headers: {'Content-Type': 'text/html'}})
+            case path.startsWith('/post/comment'):
+                const textarea = searchParams.get('textarea')
+                const post_id = searchParams.get('post_id')
+
+                var commentPostFormData = new FormData()
+                commentPostFormData.append('textarea', textarea)
+                commentPostFormData.append('post_id', post_id)
+                
+                const commentResponse = await httpFetch('/posts/' + post_id + '/comment', 'POST', commentPostFormData, 'formdata', token)
+                var fetchResult = await httpFetch('/comments/' + commentResponse.comment_id, 'GET', null)
+                
+                return new Response(await buildComment(fetchResult.comment, timezone))
+            case path.startsWith('/comments'):
+                const commentsPostID = searchParams.get('post_id')
+
+                const commentsResponse = await httpFetch('/posts/' + commentsPostID + '/comments', 'GET')
+                const commentsArr = commentsResponse.comments
+                for (let i = 0; i < commentsArr.length; i++) {
+                    var c = commentsArr[i]
+                    html += await buildComment(c, timezone)
+                }
+                return new Response(html)
             case path.startsWith('/search/render'):
                 page = Number(searchParams.get('page')) - 1
                 var q = searchParams.get('q')
@@ -180,7 +213,7 @@ export async function onRequest(context) {
                     httpFetch('/search/users?q=' + query, 'GET', null),
                     httpFetch('/search?q=' + query, 'GET', null)
                 ])
-                if (!groupsResults.communites
+                if (!groupsResults.communities
                     && !usersResults.users
                     && !postsResults.posts
                 ) {
@@ -231,6 +264,3 @@ export async function onRequest(context) {
     updatePageWithCookie(env, request, rewriter)
     return rewriter.transform(response)
 }
-/*
-[{"type":"post_love","data":{"lover":"b15f9aad6d57ed2727e22d8f","post":"af33ea194c1e14059896c584","read":true,"miscellaneous":{"creation_time":1783886646},"hash":2855262723}},{"type":"post_love","data":{"lover":"ae3b56fa0cd439061997aaf8","post":"af33ea194c1e14059896c584","read":true,"miscellaneous":{"creation_time":1783874768},"hash":3576015167}},{"type":"comment","data":{"comment":"6c9396b0818bf28952db2b74","user":"7963f91bfc853c5ccf23441a","parent_user":"352fcdc3cf66d6769f3d3de3","parent_comment":"af33ea194c1e14059896c584","read":true,"miscellaneous":{"creation_time":1783873513}}},{"type":"comment","data":{"comment":"b1f1488d070b9902bb4a005c","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_comment":"af33ea194c1e14059896c584","read":true,"miscellaneous":{"creation_time":1783872639}}},{"type":"post_love","data":{"lover":"81f21d70618723116c24db09","post":"af33ea194c1e14059896c584","read":true,"miscellaneous":{"creation_time":1783872542},"hash":3999046893}},{"type":"reply","data":{"reply":"bd1f016f570ccb5ea096098a","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_reply":"825549f9659b5aab4a6c1851","read":true,"miscellaneous":{"creation_time":1783872532}}},{"type":"reply_love","data":{"lover":"81f21d70618723116c24db09","reply":"b9974829871d28378f8e0faa","parent":"825549f9659b5aab4a6c1851","read":true,"miscellaneous":{"creation_time":1783872513},"hash":2163479794}},{"type":"reply_love","data":{"lover":"81f21d70618723116c24db09","reply":"03fcfe1eb9fad0a31bca243d","parent":"825549f9659b5aab4a6c1851","read":true,"miscellaneous":{"creation_time":1783872506},"hash":1853170202}},{"type":"reply","data":{"reply":"9c4b8106956d937bef6ccf8c","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_reply":"825549f9659b5aab4a6c1851","read":true,"miscellaneous":{"creation_time":1783869557}}},{"type":"reply","data":{"reply":"9b68983e0bff57cefb1b6a54","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_reply":"825549f9659b5aab4a6c1851","read":true,"miscellaneous":{"creation_time":1783869539}}},{"type":"reply","data":{"reply":"c5983138698cf0c2d974bb5f","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_reply":"825549f9659b5aab4a6c1851","read":true,"miscellaneous":{"creation_time":1783869450}}},{"type":"reply","data":{"reply":"090e0d134fccd06d43f534d6","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_reply":"825549f9659b5aab4a6c1851","read":true,"miscellaneous":{"creation_time":1783869076}}},{"type":"reply_love","data":{"lover":"81f21d70618723116c24db09","reply":"f76a8fd968248b2cd9ffa9f4","parent":"a36e3866212eb7effc6408f2","read":true,"miscellaneous":{"creation_time":1783869005},"hash":2582651517}},{"type":"reply","data":{"reply":"1086690daa9a7ef9efce256a","user":"7963f91bfc853c5ccf23441a","parent_user":"7963f91bfc853c5ccf23441a","parent_reply":"0afe4b427a294c138d99b6df","read":true,"miscellaneous":{"creation_time":1783860048}}},{"type":"reply","data":{"reply":"6681491c1b45a1d7ce8d1f24","user":"7963f91bfc853c5ccf23441a","parent_user":"7963f91bfc853c5ccf23441a","parent_reply":"0afe4b427a294c138d99b6df","read":true,"miscellaneous":{"creation_time":1783859463}}},{"type":"reply","data":{"reply":"67337812afb79f37d44b3b86","user":"7963f91bfc853c5ccf23441a","parent_user":"7963f91bfc853c5ccf23441a","parent_reply":"0afe4b427a294c138d99b6df","read":true,"miscellaneous":{"creation_time":1783858921}}},{"type":"reply","data":{"reply":"09677d33e7514f604c99977a","user":"7963f91bfc853c5ccf23441a","parent_user":"7963f91bfc853c5ccf23441a","parent_reply":"0afe4b427a294c138d99b6df","read":true,"miscellaneous":{"creation_time":1783858459}}},{"type":"comment","data":{"comment":"19ca978dbea28e8eb38933b8","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_comment":"a36e3866212eb7effc6408f2","read":true,"miscellaneous":{"creation_time":1783850141}}},{"type":"post_love","data":{"lover":"81f21d70618723116c24db09","post":"07cd398ab4f37901f9652afd","read":true,"miscellaneous":{"creation_time":1783840686},"hash":1633782420}},{"type":"reply","data":{"reply":"6e29a655f21962dd4a0f2264","user":"00b7b9d1439f161233e2ac70","parent_user":"352fcdc3cf66d6769f3d3de3","parent_reply":"0e8f06a575e69db0ec2d4f2d","read":true,"miscellaneous":{"creation_time":1783827599}}},{"type":"comment_love","data":{"lover":"00b7b9d1439f161233e2ac70","comment":"ed23db4861d412cabdc45c14","parent":"0e8f06a575e69db0ec2d4f2d","read":true,"miscellaneous":{"creation_time":1783827584},"hash":96916016}},{"type":"post_love","data":{"lover":"1d4fc6254094b3867cacfaa1","post":"0afe4b427a294c138d99b6df","read":true,"miscellaneous":{"creation_time":1783814058},"hash":1955428146}},{"type":"post_love","data":{"lover":"1d4fc6254094b3867cacfaa1","post":"ee18f31b7713bc6ad263bc0c","read":true,"miscellaneous":{"creation_time":1783814017},"hash":4052721059}},{"type":"post_love","data":{"lover":"9abcd41b1ef49625d7f5cf6e","post":"ee18f31b7713bc6ad263bc0c","read":true,"miscellaneous":{"creation_time":1783810468},"hash":4045737644}},{"type":"post_love","data":{"lover":"1d4fc6254094b3867cacfaa1","post":"07cd398ab4f37901f9652afd","read":true,"miscellaneous":{"creation_time":1783809868},"hash":3985690042}},{"type":"post_love","data":{"lover":"1d4fc6254094b3867cacfaa1","post":"3793daee651141121aa1513a","read":true,"miscellaneous":{"creation_time":1783809865},"hash":1474370631}},{"type":"comment","data":{"comment":"464284b65da0029e43ab305f","user":"7963f91bfc853c5ccf23441a","parent_user":"352fcdc3cf66d6769f3d3de3","parent_comment":"0afe4b427a294c138d99b6df","read":true,"miscellaneous":{"creation_time":1783805430}}},{"type":"reply","data":{"reply":"daf819a05ad15cec9ec24775","user":"7963f91bfc853c5ccf23441a","parent_user":"352fcdc3cf66d6769f3d3de3","parent_reply":"36a5fcaaf0babd536cea1173","read":true,"miscellaneous":{"creation_time":1783796674}}},{"type":"comment_love","data":{"lover":"818b1f02e9a7b022000b3654","comment":"aa4309a7c46910a28cba56cf","parent":"056330196a26d559a9c98c97","read":true,"miscellaneous":{"creation_time":1783787294},"hash":821073130}},{"type":"comment_love","data":{"lover":"818b1f02e9a7b022000b3654","comment":"5a5a88090dd32616d1630fa0","parent":"056330196a26d559a9c98c97","read":true,"miscellaneous":{"creation_time":1783787293},"hash":3045303234}},{"type":"post_love","data":{"lover":"b15f9aad6d57ed2727e22d8f","post":"07cd398ab4f37901f9652afd","read":true,"miscellaneous":{"creation_time":1783786007},"hash":621988986}},{"type":"post_love","data":{"lover":"43a1548ad5ebdccc7a9cadb4","post":"3d5152f6a8bae259df2a9481","read":true,"miscellaneous":{"creation_time":1783785459},"hash":1510301162}},{"type":"comment","data":{"comment":"2468b9e06a6be15a246e9ced","user":"81f21d70618723116c24db09","parent_user":"352fcdc3cf66d6769f3d3de3","parent_comment":"a36e3866212eb7effc6408f2","read":true,"miscellaneous":{"creation_time":1783780787}}},{"type":"post_love","data":{"lover":"3a5ac05ec068235d4f64369b","post":"3d5152f6a8bae259df2a9481","read":true,"miscellaneous":{"creation_time":1783775908},"hash":1393441352}},{"type":"post_love","data":{"lover":"81f21d70618723116c24db09","post":"3d5152f6a8bae259df2a9481","read":true,"miscellaneous":{"creation_time":1783773321},"hash":1502190209}},{"type":"comment","data":{"comment":"1c6d0f618e6967ed3b641098","user":"3a5ac05ec068235d4f64369b","parent_user":"352fcdc3cf66d6769f3d3de3","parent_comment":"e116b36ef010a0a7a814c977","read":true,"miscellaneous":{"creation_time":1783772633}}},{"type":"post_love","data":{"lover":"3a5ac05ec068235d4f64369b","post":"e116b36ef010a0a7a814c977","read":true,"miscellaneous":{"creation_time":1783772615},"hash":2767496005}},{"type":"post_love","data":{"lover":"81f21d70618723116c24db09","post":"1aa9544351793e6df823c5cc","read":true,"miscellaneous":{"creation_time":1783749764},"hash":3738842965}},{"type":"repost","data":{"repost":"89a327454d202911cd751462","user":"65f9b819264ae91c7929ab00","parent_post":"e116b36ef010a0a7a814c977","parent_user":"352fcdc3cf66d6769f3d3de3","read":true,"miscellaneous":{"creation_time":1783743484}}},{"type":"post_love","data":{"lover":"1d4fc6254094b3867cacfaa1","post":"1aa9544351793e6df823c5cc","read":true,"miscellaneous":{"creation_time":1783729542},"hash":1378578555}},{"type":"post_love","data":{"lover":"1d4fc6254094b3867cacfaa1","post":"f84548665172f5f3210b6292","read":true,"miscellaneous":{"creation_time":1783729504},"hash":2528807967}},{"type":"post_love","data":{"lover":"1d4fc6254094b3867cacfaa1","post":"08fc68a23a7a7e03a4d71797","read":true,"miscellaneous":{"creation_time":1783729485},"hash":1842961321}},{"type":"comment","data":{"comment":"dd1a83623f0922faf6261538","user":"7963f91bfc853c5ccf23441a","parent_user":"352fcdc3cf66d6769f3d3de3","parent_comment":"1aa9544351793e6df823c5cc","read":true,"miscellaneous":{"creation_time":1783726792}}},{"type":"reply","data":{"reply":"65c4525dad2a59980d93fbc9","user":"818b1f02e9a7b022000b3654","parent_user":"818b1f02e9a7b022000b3654","parent_reply":"1a997bde329cc616c75b2ea4","read":true,"miscellaneous":{"creation_time":1783707405}}},{"type":"repost","data":{"repost":"28ed21e1a7f4253d733318c0","user":"7963f91bfc853c5ccf23441a","parent_post":"f84548665172f5f3210b6292","parent_user":"352fcdc3cf66d6769f3d3de3","read":true,"miscellaneous":{"creation_time":1783705728}}},{"type":"reply","data":{"reply":"023ea4f8476b7edd0f075513","user":"818b1f02e9a7b022000b3654","parent_user":"818b1f02e9a7b022000b3654","parent_reply":"1a997bde329cc616c75b2ea4","read":true,"miscellaneous":{"creation_time":1783701578}}},{"type":"reply","data":{"reply":"f7666d20b9b700ff857b523d","user":"818b1f02e9a7b022000b3654","parent_user":"818b1f02e9a7b022000b3654","parent_reply":"1a997bde329cc616c75b2ea4","read":true,"miscellaneous":{"creation_time":1783701467}}},{"type":"comment_love","data":{"lover":"b15f9aad6d57ed2727e22d8f","comment":"72d708d1544123a6d37a88c2","parent":"c0ec212f420c78b8ddbfddee","read":true,"miscellaneous":{"creation_time":1783701136},"hash":180786599}},{"type":"post_love","data":{"lover":"43a1548ad5ebdccc7a9cadb4","post":"08fc68a23a7a7e03a4d71797","read":true,"miscellaneous":{"creation_time":1783700603},"hash":3802455020}},{"type":"post_love","data":{"lover":"ae3b56fa0cd439061997aaf8","post":"08fc68a23a7a7e03a4d71797","read":true,"miscellaneous":{"creation_time":1783694619},"hash":3662752085}}]
-*/

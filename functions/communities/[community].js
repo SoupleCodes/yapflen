@@ -1,5 +1,5 @@
 import { getToken, updatePageWithCookie } from "../../cookie.js";
-import { buildPost, md } from "../../templates/post/.js";
+import { buildPost, md, pfp } from "../../templates/post/.js";
 import { httpFetch } from "../[[index]].js";
 
 function setInnOfEl(rew,element,content) {
@@ -87,7 +87,7 @@ export async function onRequest(context) {
                     el.append('<div class="group-user-icon"><a href="/users/', { html: true, ContentOptions: 'after'})
                     el.append(o.profile.username)
                     el.append('"><img src="', { html: true, ContentOptions: 'after'})
-                    el.append(o.profile.images.icon.medium)
+                    el.append(pfp(o))
                     el.append('"/></a></div>', { html: true, ContentOptions: 'after'})
                 })
             }

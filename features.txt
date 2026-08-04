@@ -1,3 +1,31 @@
+# Important features
+
+# View posts separately
+# Interact with posts (heart, comment, report)
+# Repost posts
+# Reply to comments
+# Pin/unpin your posts
+# Create (posts, communities, polls)
+# Follow/unfollow users
+# Block/unblock users
+# Activity ping thing
+# Ping when receiving notifications
+# Reset account password
+# Activiate/deactivate account
+# Edit your profile (display name, description, profile picture, banner, links)
+# View user (posts, communities, followers/following)
+# Login and Logout
+# Delete and edit comments
+# Post actions (edit, delete, report)
+# Join/leave a community
+# Invite a user to a community
+# Transfer a community to a user
+# Community edit options (display name, links, descritpion, pfp, banner, visibility)
+
+
+
+# Quality of life features
+
 # Community picker menu in post composer
 # Ability to style your page/homepage
 # Profanity filter
@@ -37,6 +65,13 @@ and this also applies to linked images, which override being hidden in notificat
 # a way to see reposts of a post (maybe as an option in the ellipsis that goes to darflen.com/posts/[post id]/reposts ?) (yes i took this from wasteof beta it’s just soo useful)
 # choose which people you want notifications from and which people you don't.
 # we need a search bar rework where you can chose to search between posts, users and communities
+# fungi: replies and comments should be treated as posts 
+# fungi: soggify theme
+# fungi: user made themes like make a theme communitiy that has buttons on each post to add themes, each theme has metadata like css, authors, version, title
+# fungi: if you ever make a dropdown for themes, make the background color of the selection be the themes main color
+# fungi: add blocked terms where posts will be collapsed and its contents will only be viewable by clicking and also "silently" block users or communities or hashtags so that the users wont know you blocked them since incognito also exists
+# thekeura: make an alphabet soup skin that changes the font and makes the background a liquid
+# add images in poll options
 
 # https://www.slingacademy.com/article/javascript-asking-for-confirmation-before-closing-tab-window/
 ✅✅✅✅

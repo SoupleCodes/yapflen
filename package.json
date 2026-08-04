@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "highlight.js": "^11.11.1",
+        "hono": "^4.12.33",
         "markdown-it": "^14.3.0",
         "wrangler": "^4.56.0"
     }
