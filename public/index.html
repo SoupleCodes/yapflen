@@ -37,11 +37,11 @@
 
         <div id="searchbar">
           <form method="GET" autocapitalize="none" autocomplete="off" aria-expanded="true" aria-haspopup="true" aria-label="Search bar" action="/search" id="submitsearch">
-            <input name="q" placeholder="Search yapflen" onfocus="document.all['search-results'].classList.remove('thin')" onblur="document.all['search-results'].classList.add('thin')" oninput="var frame=document.all['autocomplete-iframe'];if(this.value.trim()==''){document.all['search-results'].classList.add('thin')}else{frame.src='/render/search/autocomplete&query='+this.value;document.all['search-results'].classList.remove('thin')}">
+            <input name="q" placeholder="Search yapflen" onfocus="var s=document.all['search-results'];s.classList.remove('thin');s.focus()" oninput="var frame=document.all['autocomplete-iframe'];if(this.value.trim()==''){document.all['search-results'].classList.add('thin')}else{frame.src='/render/search/autocomplete&query='+this.value;document.all['search-results'].classList.remove('thin')}">
           </form>
           <iframe class="hidden" name="autocomplete-iframe" onload="loadAutocomplete(this)"></iframe>
 
-          <div id="search-results" name="search-results" class="hidden">
+          <div id="search-results" name="search-results" class="hidden" tabindex="-1" onblur="this.classList.add('thin')">
           </div>
         </div>
 

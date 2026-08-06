@@ -585,7 +585,11 @@ iframe {
 	.post-container {
 		max-width: 100% !important;
 	}
-	.post-message-container p, #community-description p {
+	.post-message-container p, 
+	#community-description p,
+	.comment-info,
+	.comment-content,
+	.reply-toggle {
 		font-size: 115%
 	}
 	.main-content {
@@ -864,6 +868,12 @@ iframe {
 	width: 100%;
 	padding-top: 15px;
 }
+#main:has(#post-wrapper) {
+	overflow: hidden;
+	overflow-y: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
 #post-wrapper .post-container {
 	max-width: 100% !important;
 }
@@ -1054,6 +1064,10 @@ iframe {
 	padding: 4px 15px 15px 15px;
 	background: #0000000a;
 	border-top: 1px solid #DBDBDB;
+}
+.post-repost.error {
+	text-align: center;
+	padding: 20px;
 }
 .post-attachment, .post-image-slider {
 	padding: 0px 0px 12px 0px;

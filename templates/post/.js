@@ -192,10 +192,18 @@ try {
         // Reposts
         .on('.post-repost', {
             async element(el) {
-                if (data.repost && (parentPost?.repost?.repost?.repost?.repost!=data)) {
-                    el.append(await buildPost(data.repost, tmz, true, null, parentPost), { html: true, ContentOptions: 'after'})
+                if (data.repost && data.repost.error) {
+                    el.append(
+                        'The original post is unavailable or deleted.'
+                        , { html: true, ContentOptions: 'after'}
+                    )
+                    el.setAttribute("class", "post-repost error")
                 } else {
-                    el.remove()
+                    if (data.repost && (parentPost?.repost?.repost?.repost?.repost!=data)) {
+                        el.append(await buildPost(data.repost, tmz, true, null, parentPost), { html: true, ContentOptions: 'after'})
+                    } else {
+                        el.remove()
+                    }
                 }
             }
         })

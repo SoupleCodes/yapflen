@@ -66,6 +66,16 @@ function authPopup() {
     openPopup(loginIframe)
 }
 
+function interleave(arr, arr2) {
+    let newArr = [];
+    for (let i = 0; i < Math.max(arr.length, arr2.length); i++) {
+        if (i < arr.length) newArr.push(arr[i]);
+        if (i < arr2.length) newArr.push(arr2[i])
+    }
+    
+    return newArr;
+};
+
 function adjustMasonry(v) {
     var scr_w = document.body.offsetWidth
     var mobile = scr_w < 770
@@ -85,18 +95,17 @@ function adjustMasonry(v) {
         var column2 = el.querySelector('.column2')
 
         if (mobile) {
+            mobileEl.classList.remove('hidden')
+
+            interleave(
+                Array.from(column1.querySelectorAll('.post-container')),
+                Array.from(column2.querySelectorAll('.post-container'))
+            ).forEach(node => mobileEl.appendChild(node));
+
             column1.innerHTML = ''
             column1.classList.add('hidden')
             column2.innerHTML = ''
             column2.classList.add('hidden')
-            mobileEl.classList.remove('hidden')
-
-            Array.from(children)
-            .sort((a, b) => 
-                new Date(a.querySelector('.post-user-time').getAttribute('title')) < 
-                new Date(b.querySelector('.post-user-time').getAttribute('title'))
-            )
-            .forEach(node => mobileEl.appendChild(node));
         } else {
             mobileEl.innerHTML = ''
             mobileEl.classList.add('hidden')
@@ -274,7 +283,7 @@ function addEventsToPost(el, popup) {
         if (postMessageEl.offsetHeight < postMessageEl.scrollHeight ||
             postMessageEl.offsetWidth < postMessageEl.scrollWidth) {
                 var linkEl = document.createElement("a")
-                linkEl.href = '/post/' + postId
+                linkEl.href = '/posts/' + postId
                 linkEl.innerText = 'Read more...'
                 linkEl.classList.add("post-readmore")
                 postMessageEl.insertAdjacentElement("afterend", linkEl)
